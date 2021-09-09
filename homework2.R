@@ -2,7 +2,7 @@
 
 library(tidyverse) #gives access to tidyverse packages which are needed
 setwd("/home/cao2246/R/Ordonez_Cody_2/datasets.zip/gop_frags/")
-#Had to change the above line of code to avoid the following error:
+#I had to change the above line of code to avoid the following error:
 #"Error in setwd("datasets/gop_frags/") : cannot change working directory"
 files <- list.files() #initializes "files" as a list of all files in gop_frags
 data <- map(files,function(x) read_csv(x))
