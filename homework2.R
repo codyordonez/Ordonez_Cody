@@ -11,7 +11,7 @@ df1 <- gop_df %>% #runs through each file to find the number of words spoken by 
   separate(date,"date",sep = "\\.") %>% 
   separate(text, "speaker", sep = ":", remove = FALSE) %>% 
   mutate(text_length = nchar(text))
-df2 <- df1 %>% #gives a clean layout to show the number of turns speaking, total number of words, and average number of words per turn of each politican.
+df2 <- df1 %>% #gives a clean layout to show the number of turns speaking, total number of words, and average number of words per turn of each politican
   group_by(speaker) %>% 
   summarise(talking_turns = n(), 
             total_length = sum(text_length),
