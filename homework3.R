@@ -26,7 +26,10 @@ df1 <- gop_df %>%
 
 df1 <- df1 %>% corpus(docid_field = "status_id", unique_docnames = FALSE)
 
-df1 %>% 
+df2 <- df1 %>% 
   group_by(speaker) %>%
   summarise(ave_complexity = mean(Flesch))
+
+arrange(df2, desc(ave_complexity))
+
 
