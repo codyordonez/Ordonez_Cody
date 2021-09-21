@@ -40,3 +40,24 @@ Trump_Bush_Cruz_Walker_mean_diff
 # Visualize data
 Trump_Bush_Cruz_Walker_mean_diff %>% plot()
 
+
+# As we can see from the mean difference, 95% confidence interval, and plot we can say the following with high confidence (95%):
+
+# When comparing the mean difference in average complexity of Trump and Bush,
+# there is a moderate difference with Bush scoring between 0.687 and 1.31 higher complexity than Trump according to the NDC metric.
+# We can say with 95% certainty that Bush speaks with complexity between 32.4% and 61.8% higher than Trump.
+
+# When comparing the mean difference in average complexity of Trump and Cruz,
+# there is a large difference with Cruz scoring between 1.64 and 2.33 higher complexity than Trump according to the NDC metric.
+# We can say with 95% certainty that Cruz speaks with complexity between 77.4% and 109.9% higher than Trump.
+
+# When comparing the mean difference in average complexity of Trump and Walker,
+# there is a large difference with Walker scoring between 1.13 and 2.67 higher complexity than Trump according to the NDC metric.
+# We can say with 95% certainty that Walker speaks with complexity between 53.3% and 125.9% higher than Trump.
+
+# As seen in the plot, the total number of speaking turns is very different between politicians, with Trump having 738, Bush with 279, Cruz with 348, and Walker with 39.
+# This discrepancy explains the large difference in the range of the confidence interval for Trump and Walker, because there were far fewer data points to average for Walker compared to the other candidates.
+
+# Overall, the answer to the research question is yes, there is a meaningful difference in speaking complexity.
+# We can say with at least 95% confidence that all three other politicians speak with higher complexity than Trump according to the NDC metric.
+
