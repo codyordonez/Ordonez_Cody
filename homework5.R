@@ -149,3 +149,45 @@ data_word_n %>%
   labs(x = NULL, y = "tf-idf") +
   facet_wrap(~date, ncol = 2, scales = "free") +
   coord_flip()
+
+
+# As we can see from the data, plots, and results of the TF-IDF analyses, the most salient topics discussed for each of the 2015 GOP primary debates are as follows:
+
+# 2015-08-06: Veteran Affairs (va), Education (curriculum)
+# 2015-08-28: Healthcare (medicare), Fantasy football? (fantasy, football). Fantasy football doesn't exactly seem like a political issue... but we can run some code to see if "fantasy football" appears as a bigram. I will do this at the end.
+# 2015-09-16: Drug policy (marijuana), Prison system (jail), Vaccine regulation/mandates (vaccines).
+# 2015-12-15: Foreign affairs (gadhafi, assad), Immigration (refugees), Internet safety/privacy (metadata).
+# 2016-01-14: Taxes (tariff, vat), Gun control (guns, gun)
+# 2016-01-28: Racial profiling (profiling), Economic policy (entrepeneur), Puerto Rico (puerto)
+# 2016-02-06: Fifth Amendment/Eminent domain (eminent, domain, property), Military/Veteran Affairs (v.a, veteran, draft)
+# 2016-02-13: Fifth Amendment/Eminent domain (eminent, domain), New Supreme Court nomination (scalia, nominate), Poverty (antipoverty)
+# 2016-02-25: Immigration (hispanic, deportation, daca), Foreign affairs (palestinians, israel)
+# 2016-03-03: Interrogation tactics/Torture (waterboarding, breathe)
+# 2016-09-12: Monetary policy (banks, dollar, reserve), Carbon emissions/Carbon footprint? (carbon)
+
+
+# 2015-08-28 Question: Does "fantasy football appear as a bigram?
+
+bigrams <- data %>%
+  #Tokenize by bigram
+  unnest_tokens(bigram, text, token = "ngrams", n=2) %>%
+  #Filter only the relevant date
+  filter(date == "2015-08-28") %>%
+  #Count and sort by word
+  count(bigram, sort = TRUE) %>%
+
+#Filter out stopwords
+bigrams_separated <- bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+
+bigram_counts <- bigrams_filtered %>% 
+  count(word1, word2, sort = TRUE)
+
+#Display results of all bigrams without stopwords
+bigram_counts
+
+# 2015-08-28 Update: As we can see, "fantasy football" does not appear as a bigram. Thus, fantasy football unfortunately was not a topic of the debate. We can conclude that it must simply be a coincidence that "fantasy" and "football" were both commonly used salient words from this particular debate.
