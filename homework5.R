@@ -1,6 +1,6 @@
 # Homework #4 -------------------------------------------------------------
 
-# This script 1) Imports the appropriate data from the shared data sets. 2) Analyzes the speaking complexity of each speaking turn using an appropriate complexity metric 3) Aggregates the data by candidate and returns a two column data frame: speaker | ave_complexity in descending order of complexity and 4) compares the ave_complexity of Trump with Bush, Cruz, and Walker and calculates the mean difference and displays a plot. 
+# This script 1) Imports the appropriate data from the shared data sets. 2) Conducts a TF-IDF analysis comparing each of the 2015 debates. 3) Visualizes the top 10 most salient terms for each of the 2015 debates. 
 
 # Pre-flight --------------------------------------------------------------
 
@@ -19,7 +19,7 @@ data_word_n <- data %>%
   unnest_tokens(word, text) %>%
   #Use anti_join() to remove stop words
   anti_join(stop_words) %>%
-  #Filter out "fffd" which is listed many times in the data due to the code being unable to read a character
+  #Filter out "fffd" which is listed many times in the data due to the code being unable to read or translate some characters
   filter(!word %in% "fffd") %>%
   count(date, word, sort = TRUE)
 
@@ -38,8 +38,7 @@ data_word_n <- data_word_n %>%
   # Calculates TF, IDF, and TF-IDF from word totals and TFs
   bind_tf_idf(word, date, n)
 
-
-# Display 10 most salient words for each debate (in chronological order)
+# Display 10 most salient words (in order of most salient) for each debate (in chronological order)
 
 data_word_n %>%
   select(-total) %>%
@@ -106,7 +105,6 @@ data_word_n %>%
   arrange(desc(tf_idf)) %>% 
   filter(date == "2016-09-12") %>% 
   slice(1:10)
-
 
 # Plot TF-IDF for each of the debates (by 10 most salient words per debate)
 
