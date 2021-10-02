@@ -72,3 +72,20 @@ data %>%
   ggtitle("RUBIO") +
   xlab(NULL) +
   coord_flip()
+
+
+# As we can see from the plots and results of the lemmatized framegram analysis, the differences in how the candidates talked about immigration are as follows:
+
+# Trump most commonly references "border", "illegal immigration", and "Mexico". 
+# The most salient difference compared to the other candidates is Trump's frequent use of "Mexico".
+
+# Cruz most commonly references "border", "natural born", and "citizen". 
+# The most salient difference compared to the other candidates is Cruz's frequent use of "natural born".
+
+# Rubio most commonly references "legal immigration", "illegal immigration", and "immigration system". 
+# The most salient difference compared to the other candidates is Rubio's frequent use of "legal immigration".
+
+# Based on these results, it seems that when discussing immigration:
+# Trump is most focused on preventing illegal immigration from Mexico.
+# Cruz is most focused on protecting natural born citizens.
+# Rubio is most focused on the legal immigration system.
