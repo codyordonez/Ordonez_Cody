@@ -1,6 +1,6 @@
 # Homework #6 -------------------------------------------------------------
 
-# This script 1) Imports the appropriate data from the shared data sets. 2) Conducts a TF-IDF analysis comparing each of the 2015 debates. 3) Visualizes the top 10 most salient terms for each of the 2015 debates. 
+# This script 1) Imports the appropriate data from the shared data sets. 2) Conducts a lemmatized framegram analysis comparing each of the above named candidates. 3) Visualizes the top 10 most frames for each of the above named candidates.
 
 # Pre-flight --------------------------------------------------------------
 
@@ -36,7 +36,8 @@ data %>%
   mutate(trigram = reorder(trigram, n)) %>%
   slice(1:10) %>%
   ggplot(aes(x=trigram, y=n)) +
-  geom_col() +
+  geom_col(show.legend = FALSE, fill = "red") +
+  ggtitle("TRUMP") +
   xlab(NULL) +
   coord_flip()
 
@@ -51,7 +52,8 @@ data %>%
   mutate(trigram = reorder(trigram, n)) %>%
   slice(1:10) %>%
   ggplot(aes(x=trigram, y=n)) +
-  geom_col() +
+  geom_col(show.legend = FALSE, fill = "orange") +
+  ggtitle("CRUZ") +
   xlab(NULL) +
   coord_flip()
 
@@ -66,6 +68,7 @@ data %>%
   mutate(trigram = reorder(trigram, n)) %>%
   slice(1:10) %>%
   ggplot(aes(x=trigram, y=n)) +
-  geom_col() +
+  geom_col(show.legend = FALSE, fill = "green") +
+  ggtitle("RUBIO") +
   xlab(NULL) +
   coord_flip()
