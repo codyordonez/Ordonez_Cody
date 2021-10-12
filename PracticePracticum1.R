@@ -44,18 +44,18 @@ world_data_100 <- data %>%
 # Aggregate the data to combine the entries of all 4 classes (400 total entries)
 aggregated_data <- rbind(business_data_100, sci_tech_data_100, sports_data_100, world_data_100)
 
+# Add a column called "doc_id" which is the row number
 aggregated_data <- aggregated_data %>%
   mutate(doc_id = rownames(aggregated_data))
 
+# Get lexical diversity using TTR metric
 corpus <- aggregated_data %>% corpus(text_field = "description", unique_docnames = FALSE)
 corpus_tokens <- corpus %>% tokens()
-corpus_dfm <- corpus_tokens %>% dfm(remove = stopwords('en'))
+corpus_dfm <- corpus_tokens %>% dfm(remove = stopwords('en')) # remove stopwords
 lexdiv <- corpus_dfm %>% textstat_lexdiv(measure=c("TTR"))
 full_data <- aggregated_data %>% left_join(lexdiv, by=c("doc_id" = "document")) %>% unique()
 
-
 # Aggregate & Arrange Data to determine which class's entries are the most lexical diverse. 
-
 full_data %>% 
   group_by(class) %>% 
   summarise(ave_lexdiv = mean(TTR, na.rm = TRUE)) %>%
