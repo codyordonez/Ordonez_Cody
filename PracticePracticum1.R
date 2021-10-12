@@ -7,7 +7,6 @@
 # Load libraries
 library(textdata)
 library(tidyverse)
-library(tidytext)
 library(dabestr)
 library(quanteda)
 library(quanteda.textstats)
