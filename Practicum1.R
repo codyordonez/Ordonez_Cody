@@ -25,6 +25,7 @@ data <- read_csv("spam_ham.csv") # This dataset was downloaded from Canvas
 data_word_n <- data %>%
   unnest_tokens(word, Message) %>% # Tokenize by word; Message is the text of the SMS message
   anti_join(stop_words) %>% # anti_join() is used to remove stop words
+  filter(!word %in% "lt") %>% filter(!word %in% "gt") %>% # Filter out "lt" and "gt" which are listed extraneously many times due to the code frequently inserting less than and greater than symbols around a # when certain conditions are met which prevent the code from being able to read a specific term (<#>)
   count(Type, word, sort = TRUE) # Type is the classification of the SMS message (ham or spam)
 
 # Get word count by classification compared to total count of each word
@@ -60,6 +61,7 @@ stop_words_bounded <- paste0("\\b", stop_words$word, "\\b", collapse = "|") # Wi
 
 bigrams <- data %>%
   unnest_tokens(bigram, Message, token = "ngrams", n=2) %>% # Tokenize by bigram
+  filter(!bigram %in% "lt gt") %>% # Filter out "lt gt" which is listed extraneously many times due to the code frequently inserting less than and greater than symbols around a # when certain conditions are met which prevent the code from being able to read a specific term (<#>)
   filter(str_count(bigram,stop_words_bounded) < 2) %>% # Remove double stop words
   count(Type, bigram, sort = TRUE)
 
@@ -103,7 +105,7 @@ data_word_n %>%
   geom_col(show.legend = FALSE) +
   labs(x = NULL, y = "tf-idf") +
   coord_flip() +
-  facet_wrap(~Type, ncol = 2, scales = "free_y")
+  facet_wrap(~Type, ncol = 2, scales = "free")
 
 
 # Visualize frequency of the top 15 most salient bigrams for each of the two classifications (ham and spam)
@@ -119,4 +121,4 @@ bigrams %>%
   geom_col(show.legend = FALSE) +
   labs(x = NULL, y = "tf-idf") +
   coord_flip() +
-  facet_wrap(~Type, ncol = 2, scales = "free_y")
+  facet_wrap(~Type, ncol = 2, scales = "free")
