@@ -8,7 +8,6 @@
 library(tidyverse)
 library(tidytext)
 library(stringr)
-library(textstem)
 library(irr)
 
 # Load data and create labels
