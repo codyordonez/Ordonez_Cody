@@ -1,28 +1,32 @@
 # Final Project: Metrics Tool
 
-# Pre-flight
-
-# Load libraries 
+# Load libraries (these libraries were used in class assignments and will be used primarily for the speaking complexity analyses)
 library(tidyverse)
 library(dabestr)
-library(ggpubr)
-library(quanteda)
 library(quanteda.textstats)
-library(schrute) # this library is used to gain access to the relevant dataset which will be used for the analyses
 
-# Set the working directory
-setwd("/home/cao2246/R/Ordonez_Cody_2")
+# Load ggpubr library, which is used for the ggscatter plot to display the correlation results
+library(ggpubr)
 
-# Load data
-data <- schrute::theoffice # saves dataset from the schrute library
+# Load Schrute library, which is used to gain access to the dataset used for the analyses
+# The Schrute library contains data from the TV show The Office, including the entire transcript of the series as well as the writer(s), director, episode name, air date, IMDB score, and number of IMDB reviews of each episode
+library(schrute)
+
+# Load and save all data from the schrute library
+# Note that the relevant Schrute data includes each line of dialogue spoken by every character, as well as IMDB scores for each episode
+data <- schrute::theoffice
 
 
-# Part 1: Is there a meaningful mean difference in speaking complexity between Oscar and Kevin in The Office?
+# Part 1: Is there a meaningful mean difference in speaking complexity between Kevin and Oscar? What about between Jim and Dwight?
+# Part 1 uses the following R skills: readability, mean difference estimation, dabest
 
 # Analyze speaking complexity
 data <- data %>%
   bind_cols(textstat_readability(.$text,measure = "ARI")) %>% # bind ARI score to each row
   na.omit(data) # omit rows that have "na" values for ARI score
+
+# First, is there a meaningful mean difference in speaking complexity between Kevin and Oscar?
+# My prediction is yes, Oscar's speaking complexity is significantly higher than Kevin's speaking complexity
 
 # Aggregate and arrange data
 data %>% 
@@ -30,9 +34,9 @@ data %>%
   group_by(character) %>% # group by character
   summarise(ave_complexity = mean(ARI)) %>% # get average speaking complexity  
   arrange(desc(ave_complexity)) %>% # arrange descending by ave_complexity
-  filter(character == "Oscar" | character == "Kevin") # filters to include only Oscar and Kevin, the two characters the analyses will be focusing on   
+  filter(character == "Oscar" | character == "Kevin") # filters to include only Oscar and Kevin 
 
-# Calculate mean difference using dabest, please note that this process takes up to 30 seconds to run
+# Calculate mean difference using dabest, please note that this process takes up to one minute to run
 Kevin_Oscar_mean_diff <- data %>%
   dabest(character, ARI, 
          idx = c("Kevin", "Oscar"), 
@@ -44,8 +48,37 @@ Kevin_Oscar_mean_diff
 # Visualize data using a plot
 Kevin_Oscar_mean_diff %>% plot()
 
+# Next, is there a meaningful mean difference in speaking complexity between Jim and Dwight?
+# My prediction is no, Jim and Dwight have no meaningful difference in speaking complexity
+
+# Aggregate and arrange data
+data %>% 
+  select(character,ARI) %>% # select columns of interest
+  group_by(character) %>% # group by character
+  summarise(ave_complexity = mean(ARI)) %>% # get average speaking complexity  
+  arrange(desc(ave_complexity)) %>% # arrange descending by ave_complexity
+  filter(character == "Dwight" | character == "Jim") # filters to include only Dwight and Jim 
+
+# Due to a very large number of lines of dialogue for both Jim and Dwight, the dabest calculations took an extremely long time to run (sometimes crashing R), so it was shortened to include only the first, middle, and last season
+newdata <- data %>%
+  filter(season == "1" | season == "5" | season == "9")
+  
+# Calculate mean difference using dabest, please note that this process takes up to two minutes to run
+Jim_Dwight_mean_diff <- newdata %>%
+  dabest(character, ARI, 
+         idx = c("Jim", "Dwight"), 
+         paired = FALSE) %>% mean_diff()
+
+# Display mean difference and the 95% confidence interval for the comparison
+Jim_Dwight_mean_diff
+
+# Visualize data using a plot
+Jim_Dwight_mean_diff %>% plot()
+
 
 # Part 2: Is there a correlation of statistical significance between IMDB rating and mean speaking complexity per episode?
+# Part 2 uses the following R skills: correlation, ggplot2 (ggpubr)
+# My prediction is no, there is not a correlation of statistical significance between speaking complexity and IMDB rating
 
 # Create a new data frame containing each episode and its IMDB rating
 data2 <- data %>%
@@ -74,7 +107,7 @@ while(TRUE) # continuous loop until a break
       list <- rbind(list, c(avg)) # append episode mean speaking complexity to list
       sum = 0 # set sum back to 0 for next iteration
       count = 0 # set count back to 0 for next iteration
-      while(rownum < 54757) # while rownum is less than or equal to the total number of rows in data (54756 rows)
+      while(rownum <= 54756) # while rownum is less than or equal to the total number of rows in data (54756 rows)
       {
         sum = sum + data[rownum, "ARI"] # add speaking complexity of each line to get sum
         rownum = rownum + 1 # increase rownum by 1 for each iteration
@@ -84,6 +117,7 @@ while(TRUE) # continuous loop until a break
       list <- rbind(list, c(avg)) # append episode mean speaking complexity to list
       sum = 0 # set sum back to 0 for next iteration
       count = 0 # set count back to 0 for next iteration
+      episode = 24 # change episode variable to 24 for clarity, note that this does not effect the code in any way
       break # this breaks out of the loop, meaning the list is complete
     }
     if(data[rownum, "episode"] == episode) # if in the next line of the next row, the current episode has not changed
