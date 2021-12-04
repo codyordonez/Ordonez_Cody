@@ -8,12 +8,12 @@ library(quanteda.textstats)
 # Load ggpubr library, which is used for the ggscatter plot to display the correlation results
 library(ggpubr)
 
-# Load Schrute library, which is used to gain access to the dataset used for the analyses
-# The Schrute library contains data from the TV show The Office, including the entire transcript of the series as well as the writer(s), director, episode name, air date, IMDB score, and number of IMDB reviews of each episode
+# Load schrute library, which is used to gain access to the dataset used for the analyses
+# The schrute library contains data from the TV show The Office, including the entire transcript of the series as well as the writer(s), director, episode name, air date, IMDB score, and number of IMDB reviews of each episode
 library(schrute)
 
 # Load and save all data from the schrute library
-# Note that the relevant Schrute data includes each line of dialogue spoken by every character, as well as IMDB scores for each episode
+# Note that the relevant schrute data includes each line of dialogue spoken by every character, as well as IMDB scores for each episode
 data <- schrute::theoffice
 
 
